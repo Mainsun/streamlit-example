@@ -1,5 +1,4 @@
 import requests
-from bs4 import BeautifulSoup
 import streamlit as st
 
 def find_prospects(industry, area):
@@ -24,24 +23,7 @@ def find_prospects(industry, area):
     return f"An error occurred: {response.status_code}"
 
 def extract_companies_from_search_results(html):
-  # Use BeautifulSoup to parse the HTML
-  soup = BeautifulSoup(html, "html.parser")
+  # Use streamlit to parse the HTML
+  soup = st.html(html)
 
-  # Find all the h3 elements with the class "LC20lb"
-  h3_elements = soup.find_all("h3", class_="LC20lb")
-
-  # Extract the company names from the h3 elements
-  companies = [element.text for element in h3_elements]
-
-  return companies
-
-def generate_html_table(companies):
-  # Create the HTML table header
-  html = "<table>"
-  html += "<tr><th>Company</th></tr>"
-
-  # Add a row for each company
-  for company in companies:
-    html += f"<tr><td>{company}</td></tr>"
-
-  # Close the HTML table
+  # Find all the h3 elements with the class "LC
