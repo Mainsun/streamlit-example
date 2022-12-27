@@ -1,7 +1,6 @@
-from collections import namedtuple
-import altair as alt
-import math
-import pandas as pd
+pip install requests beautifulsoup4 streamlit
+import requests
+from bs4 import BeautifulSoup
 import streamlit as st
 
 def find_prospects(industry, area):
@@ -16,11 +15,14 @@ def find_prospects(industry, area):
     # Extract the companies from the search results
     companies = extract_companies_from_search_results(response.text)
 
-    # Return the companies as a JSON object
-    return { "companies": companies }
+    # Generate an HTML table containing the search results
+    html = generate_html_table(companies)
+
+    # Return the HTML code
+    return html
   else:
     # Return an error message if the request failed
-    return { "error": f"An error occurred: {response.status_code}" }
+    return f"An error occurred: {response.status_code}"
 
 def extract_companies_from_search_results(html):
   # Use BeautifulSoup to parse the HTML
@@ -34,8 +36,13 @@ def extract_companies_from_search_results(html):
 
   return companies
 
-# Find prospects in the technology industry in San Francisco
-results = find_prospects("technology", "San Francisco")
+def generate_html_table(companies):
+  # Create the HTML table header
+  html = "<table>"
+  html += "<tr><th>Company</th></tr>"
 
-# Print the results
-print(results)
+  # Add a row for each company
+  for company in companies:
+    html += f"<tr><td>{company}</td></tr>"
+
+  # Close the HTML table
